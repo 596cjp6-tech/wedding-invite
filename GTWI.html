@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gavin & Tracy Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #fdfbf7; 
+            --color-text: #5a5751; 
+            --color-gold: #c5a368; 
+            --color-gold-soft: #d4b886;
+            --color-gold-light: #f4ede1; 
+            --color-dark: #3a3834; 
+        }
+
+        body {
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            font-family: 'Noto Serif TC', serif;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            scroll-behavior: smooth;
+        }
+
+        .font-eng { font-family: 'Playfair Display', serif; }
+
+        /* 照片淡進淡出遮罩 - 頂部：保持自然過度 */
+        .photo-mask-top {
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 80%, transparent);
+        }
+
+        /* 底部照片遮罩優化：將透明度起點往下調整，避免遮到人臉 */
+        .photo-mask-bottom-fixed {
+            mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 90%, transparent 100%);
+        }
+
+        .photo-section {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            background-color: var(--color-bg);
+        }
+
+        .photo-display {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        .photo-section:hover .photo-display {
+            transform: scale(1.05);
+        }
+
+        .paper-card {
+            background-color: #fff;
+            box-shadow: 0 15px 60px rgba(197, 163, 104, 0.05);
+            border: 1px solid rgba(197, 163, 104, 0.08);
+            z-index: 30;
+        }
+
+        /* 流程圖示樣式 */
+        .timeline-item {
+            position: relative;
+            padding: 0 1.5rem;
+        }
+        .timeline-icon {
+            color: var(--color-gold);
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* 輸入框質感 */
+        .input-underline {
+            border: none;
+            border-bottom: 1px solid #e0dcd0;
+            background: transparent;
+            padding: 12px 0;
+            outline: none;
+            transition: all 0.4s ease;
+        }
+        .input-underline:focus {
+            border-bottom: 1px solid var(--color-gold);
+            padding-left: 8px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #d4b886 0%, #c5a368 100%);
+            color: white;
+            letter-spacing: 0.2em;
+            transition: all 0.5s ease;
+        }
+
+        /* 婚紗小藝廊區域 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            aspect-ratio: 3/4;
+            background-color: var(--color-gold-light);
+            overflow: hidden;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade { animation: fadeIn 1s ease-out forwards; }
+    </style>
+</head>
+<body class="antialiased min-h-screen">
+
+    <!-- 1. 頂部視覺區 -->
+    <section class="photo-section h-[75vh] photo-mask-top" onclick="document.getElementById('photoInputTop').click()">
+        <div id="placeholderTop" class="absolute inset-0 flex flex-col items-center justify-center text-[#c5a368] border-2 border-dashed border-[#c5a368]/30 m-8">
+            <span class="font-eng text-xs tracking-[0.5em] mb-2">OPENING PHOTO</span>
+            <span class="text-[10px] opacity-60">點擊上傳主視覺婚紗照</span>
+        </div>
+        <img id="imgTop" class="photo-display hidden" src="" alt="Top Wedding Photo">
+        <input type="file" id="photoInputTop" class="hidden" accept="image/*" onchange="previewImage(this, 'imgTop', 'placeholderTop')">
+    </section>
+
+    <!-- 2. 邀請核心區 -->
+    <div class="max-w-xl mx-auto -mt-32 px-4 pb-20">
+        <div class="paper-card rounded-sm overflow-hidden animate-fade">
+            <div class="p-8 sm:p-16">
+                <!-- 序言文字 -->
+                <div class="text-center mb-16">
+                    <p class="text-[#c5a368] font-eng text-[10px] tracking-[0.5em] uppercase mb-6">Our Journey Begins</p>
+                    <p class="text-sm leading-loose text-gray-500 font-light italic">
+                        因緣分相識，因愛而篤定<br>
+                        在 1915 荷造り場的古蹟歲月中<br>
+                        我們想邀您一同見證，這場名為幸福的承諾
+                    </p>
+                </div>
+
+                <!-- 標題與名字 -->
+                <div class="text-center mb-16">
+                    <h1 class="text-3xl sm:text-4xl text-[#3a3834] font-medium tracking-[0.25em] mb-4">
+                        張潘立諳 <span class="font-eng text-2xl font-light italic text-[#c5a368]">&</span> 陳怡婷
+                    </h1>
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="h-px w-6 bg-[#c5a368]/30"></div>
+                        <p class="font-eng text-lg text-[#c5a368] tracking-[0.3em]">Gavin & Tracy</p>
+                        <div class="h-px w-6 bg-[#c5a368]/30"></div>
+                    </div>
+                </div>
+
+                <!-- 流程圖示區 -->
+                <div class="grid grid-cols-2 gap-y-12 mb-16 border-y border-[#f0ede5] py-12">
+                    <div class="col-span-2 text-center">
+                        <p class="text-2xl font-light tracking-[0.3em] text-[#3a3834] mb-2">2026 . 02 . 28</p>
+                        <p class="text-xs text-[#c5a368] tracking-widest font-eng uppercase">Saturday</p>
+                        <p class="text-[10px] text-gray-400 mt-1">農曆 丙午年正月十二</p>
+                    </div>
+
+                    <div class="col-span-2 text-center">
+                        <div class="timeline-icon">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        </div>
+                        <p class="text-lg font-medium text-[#3a3834] tracking-widest mb-1">1915 荷造り場</p>
+                        <p class="text-[10px] text-gray-400 font-light tracking-widest">台北市中正區南昌路一段1號</p>
+                    </div>
+
+                    <div class="text-center timeline-item border-r border-[#f0ede5]">
+                        <div class="timeline-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                        </div>
+                        <p class="text-[10px] text-[#c5a368] tracking-widest mb-1 font-bold">RECEPTION</p>
+                        <p class="text-sm text-[#3a3834]">17:50 恭迎入席</p>
+                    </div>
+
+                    <div class="text-center timeline-item">
+                        <div class="timeline-icon">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </div>
+                        <p class="text-[10px] text-[#c5a368] tracking-widest mb-1 font-bold">BANQUET</p>
+                        <p class="text-sm text-[#3a3834]">18:30 喜宴開始</p>
+                    </div>
+                </div>
+
+                <!-- 3. 甜蜜藝廊 -->
+                <div class="mb-20">
+                    <p class="text-center font-eng text-xs text-[#c5a368] tracking-[0.4em] uppercase mb-8">Memories in Love</p>
+                    <div class="gallery-grid">
+                        <div class="gallery-item" onclick="document.getElementById('gal1Input').click()">
+                            <img id="gal1" class="hidden w-full h-full object-cover" src="" alt="Gallery 1">
+                            <div id="gal1P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
+                            <input type="file" id="gal1Input" class="hidden" accept="image/*" onchange="previewImage(this, 'gal1', 'gal1P')">
+                        </div>
+                        <div class="gallery-item" onclick="document.getElementById('gal2Input').click()">
+                            <img id="gal2" class="hidden w-full h-full object-cover" src="" alt="Gallery 2">
+                            <div id="gal2P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
+                            <input type="file" id="gal2Input" class="hidden" accept="image/*" onchange="previewImage(this, 'gal2', 'gal2P')">
+                        </div>
+                    </div>
+                    <p class="text-center text-[10px] text-gray-400 mt-4 tracking-widest font-light italic">「在對的時間，遇見最想共度餘生的人」</p>
+                </div>
+
+                <!-- 4. RSVP 表單 -->
+                <div id="rsvp-anchor" class="pt-12 border-t border-[#f0ede5]">
+                    <div class="text-center mb-12">
+                        <h3 class="font-eng text-4xl text-[#3a3834] mb-3 font-light tracking-tighter">RSVP</h3>
+                        <p class="text-xs text-gray-400 tracking-[0.2em] font-light">如果您能撥冗參加，我們將深感榮幸</p>
+                    </div>
+
+                    <form id="rsvpForm" class="space-y-10">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-[10px] text-[#c5a368] tracking-widest mb-1 uppercase font-bold">姓名 / Name</label>
+                                <input type="text" id="name" required class="input-underline w-full text-[#3a3834] placeholder-gray-300" placeholder="您的尊姓大名">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-[#c5a368] tracking-widest mb-1 uppercase font-bold">聯繫電話 / Phone</label>
+                                <input type="tel" id="phone" required class="input-underline w-full text-[#3a3834] placeholder-gray-300" placeholder="方便聯繫的號碼">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] text-[#c5a368] tracking-widest mb-4 uppercase font-bold">出席意願 / Attendance</label>
+                            <div class="flex flex-col gap-5">
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="radio" name="attendance" value="attending" checked class="sr-only peer">
+                                    <div class="w-5 h-5 border border-[#e0dcd0] rounded-full flex items-center justify-center peer-checked:border-[#c5a368] peer-checked:bg-[#c5a368] transition-all">
+                                        <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    </div>
+                                    <span class="text-sm text-[#3a3834] group-hover:text-[#c5a368]">肯定出席，期待婚禮</span>
+                                </label>
+                                <label class="flex items-center gap-3 cursor-pointer group">
+                                    <input type="radio" name="attendance" value="declined" class="sr-only peer">
+                                    <div class="w-5 h-5 border border-[#e0dcd0] rounded-full flex items-center justify-center peer-checked:border-[#c5a368] peer-checked:bg-[#c5a368] transition-all">
+                                        <div class="w-2 h-2 bg-white rounded-full"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-400 group-hover:text-[#c5a368]">雖不克前往，但心意同在</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div id="detailsSection" class="space-y-10 transition-all duration-700">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                                <div>
+                                    <label class="block text-[10px] text-[#c5a368] tracking-widest mb-1 uppercase font-bold">出席人數 / Guests</label>
+                                    <select id="guests" class="input-underline w-full text-[#3a3834] bg-transparent">
+                                        <option value="1">1 位</option>
+                                        <option value="2">2 位</option>
+                                        <option value="3">3 位</option>
+                                        <option value="4">4 位或更多</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-[#c5a368] tracking-widest mb-4 uppercase font-bold">飲食習慣 / Dietary</label>
+                                    <div class="flex gap-8">
+                                        <label class="flex items-center gap-3 cursor-pointer">
+                                            <input type="radio" name="diet" value="regular" checked class="sr-only peer">
+                                            <div class="w-4 h-4 border border-[#e0dcd0] rounded-full flex items-center justify-center peer-checked:border-[#c5a368] peer-checked:bg-[#c5a368]"><div class="w-1.5 h-1.5 bg-white rounded-full"></div></div>
+                                            <span class="text-sm text-[#3a3834]">葷食</span>
+                                        </label>
+                                        <label class="flex items-center gap-3 cursor-pointer">
+                                            <input type="radio" name="diet" value="vegetarian" class="sr-only peer">
+                                            <div class="w-4 h-4 border border-[#e0dcd0] rounded-full flex items-center justify-center peer-checked:border-[#c5a368] peer-checked:bg-[#c5a368]"><div class="w-1.5 h-1.5 bg-white rounded-full"></div></div>
+                                            <span class="text-sm text-[#3a3834]">素食</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-[#c5a368] tracking-widest mb-1 uppercase font-bold">特別備註 / Special Requests</label>
+                                <textarea id="allergy" rows="1" class="input-underline w-full text-[#3a3834] placeholder-gray-300 resize-none" placeholder="如過敏原、嬰兒座需求..."></textarea>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit w-full py-5 rounded-sm text-[10px] font-bold shadow-lg uppercase">
+                            Submit My Response
+                        </button>
+                    </form>
+
+                    <div id="successMessage" class="hidden text-center py-20">
+                        <p class="font-eng text-[#c5a368] text-5xl mb-6">Truly Grateful</p>
+                        <p class="text-[#3a3834] tracking-[0.3em] text-sm">您的心意我們已收到</p>
+                        <p class="text-[10px] text-gray-400 mt-8 underline cursor-pointer" onclick="window.location.reload()">重新修改資料</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. 底部視覺區 (遮罩優化：確保主體完整) -->
+    <section class="photo-section h-[65vh] photo-mask-bottom-fixed" onclick="document.getElementById('photoInputBottom').click()">
+        <div id="placeholderBottom" class="absolute inset-0 flex flex-col items-center justify-center text-[#c5a368] border-2 border-dashed border-[#c5a368]/20 m-12">
+            <span class="font-eng text-xs tracking-[0.5em] mb-2">END PHOTO</span>
+            <span class="text-[10px] opacity-50">點擊上傳結尾婚紗照</span>
+        </div>
+        <img id="imgBottom" class="photo-display hidden" src="" alt="Bottom Wedding Photo">
+        <input type="file" id="photoInputBottom" class="hidden" accept="image/*" onchange="previewImage(this, 'imgBottom', 'placeholderBottom')">
+    </section>
+
+    <!-- 頁尾 -->
+    <footer class="py-20 text-center">
+        <div class="h-px w-16 bg-gradient-to-r from-transparent via-[#c5a368]/40 to-transparent mx-auto mb-8"></div>
+        <p class="text-[11px] text-[#c5a368] tracking-[0.5em] font-eng uppercase mb-2">Gavin & Tracy Wedding 2026</p>
+        <p class="text-[10px] text-gray-300 tracking-widest">1915 荷造り場 | 我們在那裡等您</p>
+    </footer>
+
+    <script>
+        function previewImage(input, imgId, placeholderId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById(imgId);
+                    const placeholder = document.getElementById(placeholderId);
+                    img.src = e.target.result;
+                    img.style.opacity = '0';
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    
+                    setTimeout(() => {
+                        img.style.transition = 'opacity 1s ease-in-out';
+                        img.style.opacity = '1';
+                    }, 10);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('rsvpForm');
+            const detailsSection = document.getElementById('detailsSection');
+            const successMessage = document.getElementById('successMessage');
+            const attendRadios = document.getElementsByName('attendance');
+
+            attendRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'declined') {
+                        detailsSection.style.maxHeight = '0';
+                        detailsSection.style.opacity = '0';
+                        detailsSection.style.marginTop = '0';
+                        detailsSection.style.pointerEvents = 'none';
+                    } else {
+                        detailsSection.style.maxHeight = '1000px';
+                        detailsSection.style.opacity = '1';
+                        detailsSection.style.marginTop = '2.5rem';
+                        detailsSection.style.pointerEvents = 'auto';
+                    }
+                });
+            });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                btn.innerHTML = '<span class="inline-block animate-pulse">UPLOADING...</span>';
+                btn.disabled = true;
+
+                setTimeout(() => {
+                    form.classList.add('hidden');
+                    successMessage.classList.remove('hidden');
+                    successMessage.classList.add('animate-fade');
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
