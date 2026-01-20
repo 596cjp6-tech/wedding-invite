@@ -137,7 +137,7 @@
             <span class="font-eng text-xs tracking-[0.5em] mb-2">OPENING PHOTO</span>
             <span class="text-[10px] opacity-60">點擊上傳主視覺婚紗照</span>
         </div>
-        <img id="imgTop" class="photo-display hidden" src="./images/wedding-main.jpg" alt="Top Wedding Photo">        <input type="file" id="photoInputTop" class="hidden" accept="image/*" onchange="previewImage(this, 'imgTop', 'placeholderTop')">
+        <img id="imgTop" class="photo-display" src="./images/wedding-main.jpg" alt="Top Wedding Photo">        <input type="file" id="photoInputTop" class="hidden" accept="image/*" onchange="previewImage(this, 'imgTop', 'placeholderTop')">
     </section>
 
     <!-- 2. 邀請核心區 -->
@@ -299,7 +299,7 @@
         <div id="placeholderBottom" class="absolute inset-0 flex flex-col items-center justify-center text-[#c5a368] border-2 border-dashed border-[#c5a368]/20 m-12">
             <span class="font-eng text-xs tracking-[0.5em] mb-2">END PHOTO</span>
         </div>
-        <img id="imgBottom" class="photo-display hidden" src="./images/end.jpg" alt="Bottom Wedding Photo">        <input type="file" id="photoInputBottom" class="hidden" accept="image/*" onchange="previewImage(this, 'imgBottom', 'placeholderBottom')">
+        <img id="imgBottom" class="photo-display" src="./images/end.jpg" alt="Bottom Wedding Photo">        <input type="file" id="photoInputBottom" class="hidden" accept="image/*" onchange="previewImage(this, 'imgBottom', 'placeholderBottom')">
     </section>
 
     <!-- 管理員面板 (預設隱藏，需在網址加上 ?admin=true) -->
@@ -459,6 +459,7 @@
     </script>
 </body>
 </html>
+
 
 
 
