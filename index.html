@@ -134,8 +134,7 @@
             <span class="font-eng text-xs tracking-[0.5em] mb-2">OPENING PHOTO</span>
             <span class="text-[10px] opacity-60">點擊上傳主視覺婚紗照</span>
         </div>
-        <img id="imgTop" class="photo-display hidden" src="https://drive.google.com/file/d/1t9CmwRqn9r4GmznslKpNXSre02EgpOze/view?usp=sharing" alt="Top Wedding Photo">
-        <input type="file" id="photoInputTop" class="hidden" accept="image/*" onchange="previewImage(this, 'imgTop', 'placeholderTop')">
+        <img id="imgTop" class="photo-display hidden" src="./images/wedding-main.jpg" alt="Top Wedding Photo">        <input type="file" id="photoInputTop" class="hidden" accept="image/*" onchange="previewImage(this, 'imgTop', 'placeholderTop')">
     </section>
 
     <!-- 2. 邀請核心區 -->
@@ -190,13 +189,11 @@
                     <p class="text-center font-eng text-xs text-[#c5a368] tracking-[0.4em] uppercase mb-8">Memories in Love</p>
                     <div class="gallery-grid">
                         <div class="gallery-item" onclick="document.getElementById('gal1Input').click()">
-                            <img id="gal1" class="hidden w-full h-full object-cover" src="https://drive.google.com/file/d/14agxZfnCPRTO_mu1VAAO93bd0GuLZn19/view?usp=sharing" alt="Gallery 1">
-                            <div id="gal1P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
+                        <img id="gal1" class="hidden w-full h-full object-cover" src="./images/gallery-1.jpg" alt="Gallery 1">                            <div id="gal1P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
                             <input type="file" id="gal1Input" class="hidden" accept="image/*" onchange="previewImage(this, 'gal1', 'gal1P')">
                         </div>
                         <div class="gallery-item" onclick="document.getElementById('gal2Input').click()">
-                            <img id="gal2" class="hidden w-full h-full object-cover" src="https://drive.google.com/file/d/15_EWNNhxfvFtzHJPNLBxiL_XBTZpRNOB/view?usp=sharing" alt="Gallery 2">
-                            <div id="gal2P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
+                        <img id="gal2" class="hidden w-full h-full object-cover" src="./images/gallery-2.jpg" alt="Gallery 2">                            <div id="gal2P" class="h-full flex items-center justify-center opacity-30"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"/></svg></div>
                             <input type="file" id="gal2Input" class="hidden" accept="image/*" onchange="previewImage(this, 'gal2', 'gal2P')">
                         </div>
                     </div>
@@ -299,8 +296,7 @@
         <div id="placeholderBottom" class="absolute inset-0 flex flex-col items-center justify-center text-[#c5a368] border-2 border-dashed border-[#c5a368]/20 m-12">
             <span class="font-eng text-xs tracking-[0.5em] mb-2">END PHOTO</span>
         </div>
-        <img id="imgBottom" class="photo-display hidden" src="https://drive.google.com/file/d/1a41uCBlUBkMt5QsLfTTbqioHRp2X5PiA/view?usp=sharing" alt="Bottom Wedding Photo">
-        <input type="file" id="photoInputBottom" class="hidden" accept="image/*" onchange="previewImage(this, 'imgBottom', 'placeholderBottom')">
+        <img id="imgBottom" class="photo-display hidden" src="./images/end.jpg" alt="Bottom Wedding Photo">        <input type="file" id="photoInputBottom" class="hidden" accept="image/*" onchange="previewImage(this, 'imgBottom', 'placeholderBottom')">
     </section>
 
     <!-- 管理員面板 (預設隱藏，需在網址加上 ?admin=true) -->
@@ -460,3 +456,4 @@
     </script>
 </body>
 </html>
+
