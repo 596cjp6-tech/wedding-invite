@@ -335,7 +335,124 @@
         <p class="text-[11px] text-[#c5a368] tracking-[0.5em] font-eng uppercase mb-2">Gavin & Tracy Wedding 2026</p>
     </footer>
 
-    <!-- Firebase 串接腳本 -->
+    338
+469
+        <!-- Google Sheets 表單送出 -->
+    <script type="module">
+        // Google Sheets URL
+        const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyapxvBUC9505oGxB-iIkUQ9ZIMH9FOv6p7cYPsXdyhh2p3v7ppw3ZLmUdk2kMh89h1gg/exec';
+
+        // 圖片預覽
+        window.previewImage = function(input, imgId, placeholderId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = document.getElementById(imgId);
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                    document.getElementById(placeholderId).classList.add('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+        // 表單提交
+        document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerHTML = 'SAVING...';
+            btn.disabled = true;
+
+            const isAttending = document.querySelector('input[name="attendance"]:checked').value === 'attending';
+            const payload = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                attendance: isAttending ? '出席' : '不出席',
+                guests: isAttending ? document.getElementById('guests').value : 0,
+                diet: isAttending ? document.querySelector('input[name="diet"]:checked').value : 'N/A',
+                address: document.getElementById('address').value || '未填寫',
+                notes: document.getElementById('notes').value || '無',
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch(SHEETS_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+
+                // no-cors 模式下無法讀取 response，但請求會成功送出
+                document.getElementById('rsvpForm').classList.add('hidden');
+                document.getElementById('successMessage').classList.remove('hidden');
+                window.scrollTo({
+                    top: document.getElementById('rsvp-anchor').offsetTop - 50,
+                    behavior: 'smooth'
+                });
+            } catch (error) {
+                console.error('Submit error:', error);
+                alert('儲存失敗，請重試。');
+                btn.innerHTML = 'Submit My Response';
+                btn.disabled = false;
+            }
+        });
+
+        // 管理面板 - 從 Google Sheets 載入數據
+        if (window.location.search.includes('admin=true')) {
+            document.getElementById('adminPanel').classList.remove('hidden');
+            loadAdminDataFromSheets();
+        }
+
+        async function loadAdminDataFromSheets() {
+            try {
+                const response = await fetch(SHEETS_URL + '?action=getData');
+                const data = await response.json();
+                
+                const tbody = document.getElementById('adminTableBody');
+                tbody.innerHTML = '';
+
+                let countTotal = 0;
+                let countMeat = 0;
+                let countVeg = 0;
+
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    
+                    if (row.attendance === '出席') {
+                        const guestsNum = parseInt(row.guests || 1);
+                        countTotal += guestsNum;
+                        if (row.diet === '素食') countVeg += guestsNum;
+                        else countMeat += guestsNum;
+                    }
+
+                    tr.innerHTML = `
+                        <td class="font-bold">${row.name}</td>
+                        <td class="${row.attendance === '出席' ? 'text-green-600' : 'text-gray-400'}">${row.attendance}</td>
+                        <td>${row.attendance === '出席' ? row.guests : '-'}</td>
+                        <td>${row.phone}</td>
+                        <td>${row.diet || '-'}</td>
+                        <td class="text-xs text-gray-500 max-w-xs truncate" title="${row.address}\n${row.notes}">
+                            ${row.address !== '未填寫' ? '🏠 ' + row.address : ''}
+                            ${row.notes !== '無' ? '📝 ' + row.notes : ''}
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('totalGuests').innerText = countTotal;
+                document.getElementById('meatStats').innerText = countMeat;
+                document.getElementById('vegStats').innerText = countVeg;
+
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" class="text-center py-10 opacity-50 italic">目前尚無回覆。</td></tr>';
+                }
+            } catch (error) {
+                console.error('Load admin data error:', error);
+                document.getElementById('adminTableBody').innerHTML = '<tr><td colspan="6" class="text-center py-10 text-red-500">載入失敗，請重新整理頁面。</td></tr>';
+            }
+        }
+    </script>串接腳本 -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp, query, onSnapshot } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
@@ -467,6 +584,7 @@
     </script>
 </body>
 </html>
+
 
 
 
