@@ -447,16 +447,18 @@
 
             try {
                 await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'rsvps'), payload);
+                
+    // 也同時傳送到 Google Sheets
+    await fetch('https://script.google.com/macros/s/AKfycbyapxvBUC9505oGxB-iIkUQ9ZIMH9FOv6p7cYPsXdyhh2p3v7ppw3ZLmUdk2kMh89h1gg/exec', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
                 document.getElementById('rsvpForm').classList.add('hidden');
                 document.getElementById('successMessage').classList.remove('hidden');
                 window.scrollTo({ top: document.getElementById('rsvp-anchor').offsetTop - 50, behavior: 'smooth' });
             } catch (error) {
                       
-      // 也同時傳送到 Google Sheets
-      await fetch('https://script.google.com/macros/s/AKfycbyapxvBUC9505oGxB-iIkUQ9ZIMH9FOv6p7cYPsXdyhh2p3v7ppw3ZLmUdk2kMh89h1gg/exec', {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
                 alert("儲存失敗，請重試。");
                 btn.innerHTML = 'Submit My Response';
                 btn.disabled = false;
@@ -465,6 +467,7 @@
     </script>
 </body>
 </html>
+
 
 
 
